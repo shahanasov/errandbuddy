@@ -1,6 +1,6 @@
 import 'package:errandbuddy/constants/colors.dart';
-import 'package:errandbuddy/controllers/add_image_controller.dart';
 import 'package:errandbuddy/controllers/add_task_controllers.dart';
+import 'package:errandbuddy/view/screen/addtasks/widgets/add_image_field.dart';
 import 'package:errandbuddy/view/screen/addtasks/widgets/custom_input_field.dart';
 import 'package:errandbuddy/view/screen/addtasks/widgets/priority_field.dart';
 import 'package:errandbuddy/view/screen/addtasks/widgets/toggle_people.dart';
@@ -13,9 +13,6 @@ class AddTaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AddTaskController());
-    if (!Get.isRegistered<ImageController>()) {
-      Get.put(ImageController());
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -112,18 +109,31 @@ class AddTaskScreen extends StatelessWidget {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16),
-        child: ElevatedButton(
-          onPressed: controller.submitTask,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primaryColor,
-            foregroundColor: AppColors.backgroundLight,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+        child: Obx(() {
+          return ElevatedButton(
+            onPressed: controller.isLoading.value
+                ? null
+                : controller.submitTask,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryColor,
+              foregroundColor: AppColors.backgroundLight,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 16),
             ),
-            padding: const EdgeInsets.symmetric(vertical: 16),
-          ),
-          child: const Text("Add Task"),
-        ),
+            child: controller.isLoading.value
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
+                : const Text("Add Task"),
+          );
+        }),
       ),
     );
   }

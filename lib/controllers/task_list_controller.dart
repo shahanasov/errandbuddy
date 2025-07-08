@@ -11,16 +11,17 @@ class TaskListController extends GetxController {
     fetchTasks();
   }
 
-void fetchTasks() {
-  FirebaseFirestore.instance.collection('tasks').snapshots().listen((snapshot) {
-    final now = DateTime.now();
-    final nonOverdueTasks = snapshot.docs
-        .map((doc) => TaskModel.fromMap(doc.data()))
-        .where((task) => task.dueDate == null || task.dueDate!.isAfter(now))
-        .toList();
+  void fetchTasks() {
+    FirebaseFirestore.instance.collection('tasks').snapshots().listen((
+      snapshot,
+    ) {
+      final now = DateTime.now();
+      final nonOverdueTasks = snapshot.docs
+          .map((doc) => TaskModel.fromMap(doc.data()))
+          .where((task) => task.dueDate == null || task.dueDate!.isAfter(now) && task.isCompleted == false)
+          .toList();
 
-    tasks.assignAll(nonOverdueTasks);
-  });
-}
-
+      tasks.assignAll(nonOverdueTasks);
+    });
+  }
 }

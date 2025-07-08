@@ -17,9 +17,10 @@ class EscalationLogController extends GetxController {
 
     final escalated = snapshot.docs
         .map((doc) => TaskModel.fromMap(doc.data()))
-        .where((task) => task.dueDate != null && task.dueDate!.isBefore(now))
+        .where((task) => task.dueDate != null && task.dueDate!.isBefore(now) && task.isCompleted == false)
         .toList();
 
     tasks.assignAll(escalated);
+    
   }
 }

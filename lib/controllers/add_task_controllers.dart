@@ -7,11 +7,11 @@ import 'package:errandbuddy/data/model/task_model.dart';
 
 class AddTaskController extends GetxController {
   final titleController = TextEditingController();
-  final descriptionController = TextEditingController();
   final selectedPriority = ''.obs;
   final selectedDate = Rxn<DateTime>();
   final selectedAssignee = ''.obs;
   final selectedAssigneeName = ''.obs;
+  final isLoading = false.obs;
 
   void selectPriority(String priority) {
     selectedPriority.value = priority;
@@ -23,67 +23,72 @@ class AddTaskController extends GetxController {
 
   void toggleAssignee(String id, String name) {
     if (selectedAssignee.value == id) {
-      // Unselect if already selected
       selectedAssignee.value = '';
       selectedAssigneeName.value = '';
     } else {
-      // Select the new person
       selectedAssignee.value = id;
       selectedAssigneeName.value = name;
     }
   }
 
-Future<void> submitTask() async {
-  // 💡 Step 1: Add image controller
-  final imageController = Get.find<ImageController>();
 
-  // 🛑 Step 2: Validation (added image check)
-  if (titleController.text.trim().isEmpty ||
-      descriptionController.text.trim().isEmpty ||
-      selectedPriority.value.isEmpty ||
-      selectedAssignee.value.isEmpty ||
-      imageController.selectedImage.value == null) {
-    Get.snackbar("Validation", "All fields are required including an image.");
-    return;
-  }
 
-  try {
-    // ☁️ Step 3: Upload image to Cloudinary
-    final imageUrl = await imageController.uploadImageToCloudinary();
-    if (imageUrl == null) {
-      Get.snackbar("Image Error", "Failed to upload image.");
+  Future<void> submitTask() async {
+    print("📌 submitTask started");
+
+    final imageController = Get.find<ImageController>();
+
+    if (titleController.text.trim().isEmpty ||
+        selectedPriority.value.isEmpty ||
+        selectedAssignee.value.isEmpty ||
+        imageController.selectedImage.value == null) {
+      Get.snackbar("Validation", "All fields are required including an image.");
       return;
     }
 
-    // 📦 Step 4: Create task model with imageUrl
-    final newTask = TaskModel(
-      title: titleController.text.trim(),
-      priority: selectedPriority.value,
-      assignee: selectedAssigneeName.string,
-      dueDate: selectedDate.value,
-      description: imageUrl, // ✅ HIGHLIGHTED: Add this line in your model too
-    );
+    isLoading.value = true; // ⏳ Start loading
 
-    // ✅ Step 5: Assign task to assignee
-    markTaskAssigned(selectedAssigneeName.string);
+    try {
+      String? imageUrl;
 
-    // 🔥 Step 6: Add to Firestore
-    await FirebaseFirestore.instance
-        .collection('tasks')
-        .add(newTask.toJson());
+      if (imageController.selectedImage.value != null) {
+        imageUrl = await imageController.uploadImageToCloudinary(
+          imageController.selectedImage.value!.path,
+        );
+      } else {
+        Get.snackbar("Error", "No image selected to upload");
+        return;
+      }
 
-    Get.back();
-    Get.snackbar("Success", "Task created successfully");
-  } catch (e) {
-    Get.snackbar("Error", "Failed to create task: $e");
-  }
-}
+      print("✅ Image uploaded: $imageUrl");
 
+      if (imageUrl == null) {
+        Get.snackbar("Image Error", "Failed to upload image.");
+        return;
+      }
+      final id = FirebaseFirestore.instance.collection('tasks').doc().id;
+      final newTask = TaskModel(
+        title: titleController.text.trim(),
+        priority: selectedPriority.value,
+        assignee: selectedAssigneeName.string,
+        dueDate: selectedDate.value,
+        imageUrl: imageUrl,
+        isCompleted: false,
+        id: id
+      );
+      markTaskAssigned(selectedAssigneeName.string);
 
-  @override
-  void onClose() {
-    titleController.dispose();
-    descriptionController.dispose();
-    super.onClose();
+      await FirebaseFirestore.instance
+          .collection('tasks').doc(id)
+          .set(newTask.toJson());
+
+      Get.back();
+      Get.snackbar("Success", "Task created successfully");
+    } catch (e) {
+      Get.snackbar("Error", "Failed to create task: $e");
+    } finally {
+      isLoading.value = false; // Stop loading
+      imageController.selectedImage.value = null;
+    }
   }
 }

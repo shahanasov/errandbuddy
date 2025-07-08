@@ -1,3 +1,4 @@
+import 'package:errandbuddy/constants/colors.dart';
 import 'package:errandbuddy/data/model/task_model.dart';
 import 'package:flutter/material.dart';
 
@@ -13,19 +14,6 @@ class TaskCard extends StatelessWidget {
     return "${diff + 1} Days";
   }
 
-  Color getPriorityColor(String priority) {
-    switch (priority.toLowerCase()) {
-      case 'high':
-        return Colors.redAccent;
-      case 'medium':
-        return Colors.orange;
-      case 'low':
-        return Colors.green;
-      default:
-        return Colors.grey;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,20 +24,25 @@ class TaskCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("${task.priority} Priority",
-                    style: TextStyle(
-                      color: getPriorityColor(task.priority),
-                      fontWeight: FontWeight.w600,
-                    )),
+                Text(
+                  "${task.priority} Priority",
+                  style: TextStyle(
+                    color: AppColors.secondaryText,
+                    
+                  ),
+                ),
                 const SizedBox(height: 6),
                 Text(
                   task.title,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Due: ${getDueText(task.dueDate??DateTime.now())}",
-                  style: TextStyle(color: Colors.grey.shade600),
+                  "Due: ${getDueText(task.dueDate ?? DateTime.now())}",
+                  style: TextStyle(color: AppColors.secondaryText),
                 ),
               ],
             ),
@@ -57,11 +50,34 @@ class TaskCard extends StatelessWidget {
           const SizedBox(width: 12),
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.asset(
-              'assets/images/washday.png',
+            child: Image.network(
+              task.imageUrl, // 👈 your Cloudinary image URL string
               width: 100,
               height: 70,
               fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return SizedBox(
+                  width: 100,
+                  height: 70,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                                (loadingProgress.expectedTotalBytes ?? 1)
+                          : null,
+                    ),
+                  ),
+                );
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  width: 100,
+                  height: 70,
+                  color: Colors.grey[300],
+                  child: const Icon(Icons.broken_image, color: Colors.grey),
+                );
+              },
             ),
           ),
         ],
