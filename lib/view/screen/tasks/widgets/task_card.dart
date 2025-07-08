@@ -19,6 +19,7 @@ class TaskCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
+        //  to mark as completed
         isCompleted(context, task,false);
       },
       child: Container(

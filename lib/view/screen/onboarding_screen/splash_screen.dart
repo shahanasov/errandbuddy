@@ -23,7 +23,7 @@ class SplashScreen extends StatelessWidget {
             Text(
               'ERRAND BUDDY',
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.backgroundLight,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),

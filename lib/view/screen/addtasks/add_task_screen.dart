@@ -36,6 +36,7 @@ class AddTaskScreen extends StatelessWidget {
               //  add image field
               ImageField(),
               const SizedBox(height: 16),
+              // select priority of task
               const Text(
                 "Priority",
                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -69,8 +70,10 @@ class AddTaskScreen extends StatelessWidget {
                 }),
               ),
               const SizedBox(height: 8),
+              // to select assing person by avatar
               AssigneeSelector(),
               const SizedBox(height: 16),
+              // select due date
               GestureDetector(
                 onTap: () async {
                   final picked = await showDatePicker(

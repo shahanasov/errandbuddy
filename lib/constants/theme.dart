@@ -19,20 +19,4 @@ class AppTheme {
     iconTheme: const IconThemeData(color: AppColors.darkTeal),
   );
 
-//  check need of dark theme 
-  // static final ThemeData dark = ThemeData(
-  //   brightness: Brightness.dark,
-  //   scaffoldBackgroundColor: AppColors.backgroundLight,
-  //   primaryColor: AppColors.darkTeal,
-  //   appBarTheme: const AppBarTheme(
-  //     backgroundColor: AppColors.darkTeal,
-  //     foregroundColor: Colors.white,
-  //     elevation: 0,
-  //   ),
-  //   textTheme: const TextTheme(
-  //     bodyLarge: TextStyle(fontSize: 16, color: Colors.white),
-  //   ),
-  //   cardColor: AppColors.cardColor,
-  //   iconTheme: const IconThemeData(color: Colors.white),
-  // );
 }

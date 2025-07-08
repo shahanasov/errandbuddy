@@ -1,5 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+// save onboarding screen to avoid repeated showing 
 class AppPreferences {
   static const String onboardingKey = 'is_first_time';
 

@@ -36,7 +36,7 @@ class AddTaskController extends GetxController {
 
 
   Future<void> submitTask() async {
-    log("📌 submitTask started");
+    log("submitTask started");
 
     final imageController = Get.find<ImageController>();
 
@@ -48,7 +48,7 @@ class AddTaskController extends GetxController {
       return;
     }
 
-    isLoading.value = true; // ⏳ Start loading
+    isLoading.value = true; //  Start loading
 
     try {
       String? imageUrl;
@@ -62,7 +62,7 @@ class AddTaskController extends GetxController {
         return;
       }
 
-      log("✅ Image uploaded: $imageUrl");
+      log(" Image uploaded: $imageUrl");
 
       if (imageUrl == null) {
         Get.snackbar("Image Error", "Failed to upload image.");

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:errandbuddy/constants/colors.dart';
 import 'package:errandbuddy/controllers/add_image_controller.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,7 @@ class ImageField extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         await imageController.pickImage();
-        // print("Picked Image: ${imageController.selectedImage.value?.path}");
+        log("Picked Image: ${imageController.selectedImage.value?.path}");
       },
       child: Obx(() {
         return Container(

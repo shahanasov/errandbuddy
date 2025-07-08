@@ -1,3 +1,4 @@
+import 'package:errandbuddy/constants/colors.dart';
 import 'package:errandbuddy/controllers/add_task_controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,10 +17,10 @@ class PriorityChip extends StatelessWidget {
         label: Text(label),
         selected: isSelected,
         onSelected: (_) => controller.selectPriority(label),
-        selectedColor: Colors.blue,
+        selectedColor: AppColors.primaryColor,
         backgroundColor: Colors.grey.shade200,
         labelStyle: TextStyle(
-          color: isSelected ? Colors.white : Colors.black,
+          color: isSelected ? AppColors.backgroundLight : Colors.black,
         ),
       );
     });

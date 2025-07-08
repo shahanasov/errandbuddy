@@ -81,7 +81,7 @@ void fetchAndUpdateOverdueTasks() async {
 }
 Future<void> countCompletedTask(TaskModel task, {required bool isOverdue}) async {
   try {
-    // Step 1: Look up the member by name (slow)
+    // Look up the member by name (slow)
     final query = await FirebaseFirestore.instance
         .collection('members')
         .where('name', isEqualTo: task.assignee)
@@ -114,7 +114,7 @@ Future<void> countCompletedTask(TaskModel task, {required bool isOverdue}) async
       'assigned': assigned,
     });
 
-    // Optional: mark task completed
+    // mark task completed
     await FirebaseFirestore.instance
         .collection('tasks')
         .doc(task.id)

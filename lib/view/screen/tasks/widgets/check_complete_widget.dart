@@ -9,7 +9,7 @@ isCompleted(BuildContext context, TaskModel task,bool isOverdue) {
 
   showDialog(
     context: context,
-    barrierDismissible: true,// user must tap a button
+    barrierDismissible: true,
     builder: (_) {
       return Dialog(
         shape: RoundedRectangleBorder(
