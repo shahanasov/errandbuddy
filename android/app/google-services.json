@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "550350516804",
+    "project_id": "errandbuddy-87b40",
+    "storage_bucket": "errandbuddy-87b40.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:550350516804:android:0e9277ee7389f268afc211",
+        "android_client_info": {
+          "package_name": "com.example.errandbuddy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwqGDDecLT3T4ckm0faIahVe3U_fsijHM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
