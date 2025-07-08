@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:errandbuddy/controllers/add_image_controller.dart';
 import 'package:errandbuddy/data/services/task_services.dart';
 import 'package:get/get.dart';
@@ -34,7 +36,7 @@ class AddTaskController extends GetxController {
 
 
   Future<void> submitTask() async {
-    print("📌 submitTask started");
+    log("📌 submitTask started");
 
     final imageController = Get.find<ImageController>();
 
@@ -60,7 +62,7 @@ class AddTaskController extends GetxController {
         return;
       }
 
-      print("✅ Image uploaded: $imageUrl");
+      log("✅ Image uploaded: $imageUrl");
 
       if (imageUrl == null) {
         Get.snackbar("Image Error", "Failed to upload image.");

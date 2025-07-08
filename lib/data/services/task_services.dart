@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:errandbuddy/data/model/task_model.dart';
 import 'package:get/get.dart';
@@ -44,7 +46,7 @@ void fetchAndUpdateOverdueTasks() async {
     final Map<String, int> overdueCountByName = {};
 
     for (var task in overdueTasks) {
-      final name = task.assignee; // or task.name based on your model
+      final name = task.assignee; 
       if (name != null) {
         overdueCountByName[name] = (overdueCountByName[name] ?? 0) + 1;
       }
@@ -68,13 +70,13 @@ void fetchAndUpdateOverdueTasks() async {
             .doc(docId)
             .update({'overdue': count});
 
-        print("Updated $name's overdue count to $count ✅");
+        log("Updated $name's overdue count to $count ✅");
       } else {
-        print("No user found with name $name ❌");
+        log("No user found with name $name ❌");
       }
     }
   } catch (e) {
-    print("Error updating overdue tasks: $e");
+    log("Error updating overdue tasks: $e");
   }
 }
 Future<void> countCompletedTask(TaskModel task, {required bool isOverdue}) async {
@@ -87,7 +89,7 @@ Future<void> countCompletedTask(TaskModel task, {required bool isOverdue}) async
         .get();
 
     if (query.docs.isEmpty) {
-      print("❌ No member found with name ${task.assignee}");
+      log("❌ No member found with name ${task.assignee}");
       return;
     }
 
@@ -120,7 +122,7 @@ Future<void> countCompletedTask(TaskModel task, {required bool isOverdue}) async
 
     Get.snackbar("✅ Task Completed", "Member stats updated");
   } catch (e) {
-    print("❌ Error: $e");
+    log("❌ Error: $e");
     Get.snackbar("Error", "Could not update member stats");
   }
 }

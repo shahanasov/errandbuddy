@@ -27,7 +27,7 @@ class EscalationTaskTile extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
-      child: GestureDetector(
+      child: InkWell(
         onTap: () {
           isCompleted(context, task,true);
         },

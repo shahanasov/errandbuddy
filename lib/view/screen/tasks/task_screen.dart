@@ -13,7 +13,7 @@ class TaskTab extends StatelessWidget {
     final controller = Get.put(TaskListController());
     return Scaffold(
       appBar: AppBar(title: Text('Task'), centerTitle: true),
-          body: Obx(() {
+      body: Obx(() {
         if (controller.tasks.isEmpty) {
           return const Center(child: Text("No tasks yet!"));
         }
@@ -37,8 +37,6 @@ class TaskTab extends StatelessWidget {
         ),
         child: Icon(Icons.add, color: AppColors.cardColor, size: 30),
       ),
-
-  
     );
   }
 }

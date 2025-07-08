@@ -1,7 +1,9 @@
+import 'package:errandbuddy/constants/colors.dart';
 import 'package:errandbuddy/controllers/members_controller.dart';
 import 'package:errandbuddy/view/screen/members/widgets/member_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MembersTab extends StatelessWidget {
   const MembersTab({super.key});
