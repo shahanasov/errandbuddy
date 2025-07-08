@@ -13,7 +13,7 @@ class ImageField extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         await imageController.pickImage();
-        print("Picked Image: ${imageController.selectedImage.value?.path}");
+        // print("Picked Image: ${imageController.selectedImage.value?.path}");
       },
       child: Obx(() {
         return Container(
@@ -29,7 +29,7 @@ class ImageField extends StatelessWidget {
                   borderRadius: BorderRadius.circular(9),
                   child: Image.file(
                     imageController.selectedImage.value!,
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                   ),
                 )
               : Center(

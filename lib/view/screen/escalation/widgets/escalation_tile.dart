@@ -1,4 +1,5 @@
 import 'package:errandbuddy/data/model/task_model.dart';
+import 'package:errandbuddy/view/screen/tasks/widgets/check_complete_widget.dart';
 import 'package:flutter/material.dart';
 
 class EscalationTaskTile extends StatelessWidget {
@@ -26,33 +27,38 @@ class EscalationTaskTile extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                task.title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
+      child: GestureDetector(
+        onTap: () {
+          isCompleted(context, task,true);
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  task.title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                overflow: TextOverflow.ellipsis,
-                "Originally assigned to $assigned",
-                style: TextStyle(color: Colors.blueGrey.shade500, fontSize: 13),
-              ),
-            ],
-          ),
-
-          Text(
-            overdue,
-            style: const TextStyle(color: Colors.black87, fontSize: 14),
-          ),
-        ],
+                const SizedBox(height: 4),
+                Text(
+                  overflow: TextOverflow.ellipsis,
+                  "Originally assigned to $assigned",
+                  style: TextStyle(color: Colors.blueGrey.shade500, fontSize: 13),
+                ),
+              ],
+            ),
+        
+            Text(
+              overdue,
+              style: const TextStyle(color: Colors.black87, fontSize: 14),
+            ),
+          ],
+        ),
       ),
     );
   }

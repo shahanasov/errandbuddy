@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
             type: BottomNavigationBarType.fixed,
             selectedItemColor: AppColors.darkTeal,
             unselectedItemColor: AppColors.secondaryText,
-            items: const [
+            items: [
               BottomNavigationBarItem(
                 icon: Icon(Icons.people),
                 label: 'Members',

@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:errandbuddy/data/model/task_model.dart';
+import 'package:get/get.dart';
 
 Future<void> markTaskAssigned(String name) async {
   try {
@@ -19,10 +20,10 @@ Future<void> markTaskAssigned(String name) async {
 
       
     } else {
-      print("No user found with name $name ❌");
+      // print("No user found with name $name ❌");
     }
   } catch (e) {
-    print("Error: $e");
+    // print("Error: $e");
   }
 }
 
@@ -76,21 +77,50 @@ void fetchAndUpdateOverdueTasks() async {
     print("Error updating overdue tasks: $e");
   }
 }
+Future<void> countCompletedTask(TaskModel task, {required bool isOverdue}) async {
+  try {
+    // Step 1: Look up the member by name (slow)
+    final query = await FirebaseFirestore.instance
+        .collection('members')
+        .where('name', isEqualTo: task.assignee)
+        .limit(1)
+        .get();
 
+    if (query.docs.isEmpty) {
+      print("❌ No member found with name ${task.assignee}");
+      return;
+    }
 
+    final memberDoc = query.docs.first;
+    final memberRef = memberDoc.reference;
 
-Future<void> markTaskAsCompleted(TaskModel task) async {
-  await FirebaseFirestore.instance.collection('tasks').doc(task.id).update({
-    'isCompleted': true,
-  });
+    final data = memberDoc.data();
+    int completed = data['completed'] ?? 0;
+    int overdue = data['overdue'] ?? 0;
+    int assigned = data['assigned'] ?? 0;
 
-  // Update the member's completedTasks count
-  final memberRef = FirebaseFirestore.instance.collection('members').doc(task.assignee);
+    completed += 1;
+    if (isOverdue) {
+      overdue = overdue > 0 ? overdue - 1 : 0;
+    } else {
+      assigned = assigned > 0 ? assigned - 1 : 0;
+    }
 
-  // Firestore transaction to avoid conflict
-  await FirebaseFirestore.instance.runTransaction((transaction) async {
-    final memberSnapshot = await transaction.get(memberRef);
-    int currentCount = memberSnapshot['completedTasks'] ?? 0;
-    transaction.update(memberRef, {'completedTasks': currentCount + 1});
-  });
+    await memberRef.update({
+      'completed': completed,
+      'overdue': overdue,
+      'assigned': assigned,
+    });
+
+    // Optional: mark task completed
+    await FirebaseFirestore.instance
+        .collection('tasks')
+        .doc(task.id)
+        .update({'isCompleted': true});
+
+    Get.snackbar("✅ Task Completed", "Member stats updated");
+  } catch (e) {
+    print("❌ Error: $e");
+    Get.snackbar("Error", "Could not update member stats");
+  }
 }

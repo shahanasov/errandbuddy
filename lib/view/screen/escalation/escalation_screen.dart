@@ -12,7 +12,10 @@ class EscalationLogScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Escalation Log", style: TextStyle(fontWeight: FontWeight.w600)),
+        title: const Text(
+          "Escalation Log",
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -22,14 +25,14 @@ class EscalationLogScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Obx(() {
-         if (controller.tasks.isEmpty) {
-          return const Center(
-            child: Text(
-              "No escalated tasks!",
-              style: TextStyle(fontSize: 16),
-            ),
-          );
-        }
+          if (controller.tasks.isEmpty) {
+            return const Center(
+              child: Text(
+                "No escalated tasks!",
+                style: TextStyle(fontSize: 16),
+              ),
+            );
+          }
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,

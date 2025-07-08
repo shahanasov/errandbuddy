@@ -8,7 +8,7 @@ class AssigneeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     final member = Get.find<AssigneeSummaryController>();
+    final member = Get.find<AssigneeSummaryController>();
 
     return Obx(() {
       return Row(
@@ -24,8 +24,6 @@ class AssigneeSelector extends StatelessWidget {
     });
   }
 }
-
-
 
 class AssigneeAvatar extends StatelessWidget {
   final String id;
@@ -46,10 +44,10 @@ class AssigneeAvatar extends StatelessWidget {
     return Obx(() {
       final isSelected = controller.selectedAssignee.contains(id);
       return GestureDetector(
-        onTap: () => controller.toggleAssignee(id,name),
+        onTap: () => controller.toggleAssignee(id, name),
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          padding: const EdgeInsets.all(2),
+          // margin: const EdgeInsets.symmetric(horizontal: 8),
+          // padding: const EdgeInsets.all(2),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
@@ -57,42 +55,10 @@ class AssigneeAvatar extends StatelessWidget {
               width: 2,
             ),
           ),
-          child: CircleAvatar(
-            radius: 22,
-            backgroundImage: AssetImage(imagePath),
-          ),
+          child: ClipOval(child: Image.asset(imagePath, fit: BoxFit.cover)),
         ),
       );
     });
   }
 }
 
-
-
-//  Obx(() {
-//                 return Row(
-//                   children: [
-//                     for (final user in ['👩‍💼', '🧑‍💼', '👨‍💼']) // emoji placeholders
-//                       GestureDetector(
-//                         onTap: () => controller.toggleAssignee(user),
-//                         child: Container(
-                          
-//                           padding: const EdgeInsets.all(2),
-//                           decoration: BoxDecoration(
-//                             shape: BoxShape.circle,
-//                             border: Border.all(
-//                               color: controller.selectedAssignees.contains(user)
-//                                   ? Colors.blue
-//                                   : Colors.transparent,
-//                               width: 2,
-//                             ),
-//                           ),
-//                           child: CircleAvatar(
-//                             backgroundColor: Colors.grey.shade300,
-//                             child: Text(user),
-//                           ),
-//                         ),
-//                       ),
-//                   ],
-//                 );
-//               }),there should be 2 or more persons  also design should be same 

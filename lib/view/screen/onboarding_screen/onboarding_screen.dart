@@ -16,25 +16,25 @@ class OnboardingScreen extends StatelessWidget {
         PageViewModel(
           title: "Manage Your Tasks",
           body: "Easily create, edit,\n and complete your daily tasks.",
-          image: ClipRRect(
-            borderRadius: BorderRadiusGeometry.circular(10),
-            child: Image.asset("assets/images/todo.png", height: 300),
-          ),
+          image: Image.asset("assets/images/todo.png", height: 300),
           decoration: customPageDecoration,
         ),
         PageViewModel(
           title: "Organize Your Life",
           body: "Group your tasks\n and stay organized without effort.",
-          image: ClipRRect(
-            borderRadius: BorderRadiusGeometry.circular(15),
-            child: Image.asset("assets/images/todo.png", height: 300),
+          image: Padding(
+          padding: const EdgeInsets.only(bottom: 70),
+            child: Image.asset("assets/images/grouptask.png", height: 150),
           ),
           decoration: customPageDecoration,
         ),
         PageViewModel(
           title: "Get Reminded",
           body: "Never miss a task with\n timely notifications and reminders.",
-          image: Image.asset("assets/images/todo.png", height: 300),
+          image: Padding(
+            padding: const EdgeInsets.only(bottom: 80),
+            child: Image.asset("assets/images/overdue.png", height: 150),
+          ),
           decoration: customPageDecoration,
         ),
       ],

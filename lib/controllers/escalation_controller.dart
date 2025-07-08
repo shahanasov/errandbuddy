@@ -13,14 +13,20 @@ class EscalationLogController extends GetxController {
 
   void fetchEscalatedTasks() async {
     final now = DateTime.now();
-    final snapshot = await FirebaseFirestore.instance.collection('tasks').get();
+    FirebaseFirestore.instance.collection('tasks').snapshots().listen((
+      snapshot,
+    ) {
+      final escalated = snapshot.docs
+          .map((doc) => TaskModel.fromMap(doc.data()))
+          .where(
+            (task) =>
+                task.dueDate != null &&
+                task.dueDate!.isBefore(now) &&
+                task.isCompleted == false,
+          )
+          .toList();
 
-    final escalated = snapshot.docs
-        .map((doc) => TaskModel.fromMap(doc.data()))
-        .where((task) => task.dueDate != null && task.dueDate!.isBefore(now) && task.isCompleted == false)
-        .toList();
-
-    tasks.assignAll(escalated);
-    
+      tasks.assignAll(escalated);
+    });
   }
 }
