@@ -4,21 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MembersTab extends StatelessWidget {
-  const MembersTab ({super.key});
+  const MembersTab({super.key});
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AssigneeSummaryController());
 
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Members"),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text("Members"), centerTitle: true),
       body: Obx(() {
-        if(controller.assignees.isEmpty){
-          Center(child: Text('No Members yet!'),);
+        if (controller.isLoading.value==true) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (controller.assignees.isEmpty) {
+          Center(child: Text('No Members yet!'));
         }
         return GridView.builder(
           padding: const EdgeInsets.all(16),

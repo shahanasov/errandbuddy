@@ -1,5 +1,5 @@
 import 'package:errandbuddy/constants/colors.dart';
-import 'package:errandbuddy/view/screen/onboarding_screen/onboarding_screen.dart';
+import 'package:errandbuddy/controllers/splash_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,10 +9,8 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  
-    Future.delayed(const Duration(seconds: 3), () {
-      Get.off(() => const OnboardingScreen()); 
-    });
+  Get.put(SplashController());
+
 
     return Scaffold(
       backgroundColor: AppColors.darkTeal,

@@ -1,4 +1,5 @@
 import 'package:errandbuddy/constants/colors.dart';
+import 'package:errandbuddy/controllers/add_image_controller.dart';
 import 'package:errandbuddy/controllers/add_task_controllers.dart';
 import 'package:errandbuddy/view/screen/addtasks/widgets/custom_input_field.dart';
 import 'package:errandbuddy/view/screen/addtasks/widgets/priority_field.dart';
@@ -12,6 +13,9 @@ class AddTaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AddTaskController());
+    if (!Get.isRegistered<ImageController>()) {
+      Get.put(ImageController());
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -31,11 +35,9 @@ class AddTaskScreen extends StatelessWidget {
                 controller: controller.titleController,
               ),
               const SizedBox(height: 12),
-              CustomInputField(
-                hint: 'Description',
-                controller: controller.descriptionController,
-                maxLines: 5,
-              ),
+
+              //  add image field
+              ImageField(),
               const SizedBox(height: 16),
               const Text(
                 "Priority",

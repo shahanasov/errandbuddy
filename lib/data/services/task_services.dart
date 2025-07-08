@@ -1,19 +1,27 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:errandbuddy/data/model/task_model.dart';
 
-Future<void> saveTask(TaskModel task) async {
+Future<void> markTaskAssigned(String name) async {
   try {
-    // Get a reference to the Firestore collection "tasks"
-    final taskCollection = FirebaseFirestore.instance.collection('tasks');
+    final snapshot = await FirebaseFirestore.instance
+        .collection('members')
+        .where('name', isEqualTo: name)
+        .get();
 
-    // Convert the task to a JSON-like map
-    final taskData = task.toJson();
+    if (snapshot.docs.isNotEmpty) {
+      final docId = snapshot.docs.first.id;
 
-    // Add the task to Firestore (auto-generates an ID)
-    await taskCollection.add(taskData);
+      await FirebaseFirestore.instance
+          .collection('members')
+          .doc(docId)
+          .update({'assigned': FieldValue.increment(1)});
 
-    // print('✅ Task saved successfully!');
+      print("Marked $name as completed ✅");
+    } else {
+      print("No user found with name $name ❌");
+    }
   } catch (e) {
-    // print('❌ Failed to save task: $e');
+    print("Error: $e");
   }
 }
+

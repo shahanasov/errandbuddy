@@ -1,3 +1,5 @@
+import 'package:errandbuddy/controllers/add_image_controller.dart';
+import 'package:errandbuddy/data/services/task_services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -31,34 +33,52 @@ class AddTaskController extends GetxController {
     }
   }
 
-  Future<void> submitTask() async {
-    if (titleController.text.trim().isEmpty ||
-        descriptionController.text.trim().isEmpty ||
-        selectedPriority.value.isEmpty ||
-        selectedAssignee.value.isEmpty) {
-      Get.snackbar("Validation", "All fields are required.");
+Future<void> submitTask() async {
+  // 💡 Step 1: Add image controller
+  final imageController = Get.find<ImageController>();
+
+  // 🛑 Step 2: Validation (added image check)
+  if (titleController.text.trim().isEmpty ||
+      descriptionController.text.trim().isEmpty ||
+      selectedPriority.value.isEmpty ||
+      selectedAssignee.value.isEmpty ||
+      imageController.selectedImage.value == null) {
+    Get.snackbar("Validation", "All fields are required including an image.");
+    return;
+  }
+
+  try {
+    // ☁️ Step 3: Upload image to Cloudinary
+    final imageUrl = await imageController.uploadImageToCloudinary();
+    if (imageUrl == null) {
+      Get.snackbar("Image Error", "Failed to upload image.");
       return;
     }
 
+    // 📦 Step 4: Create task model with imageUrl
     final newTask = TaskModel(
       title: titleController.text.trim(),
-      description: descriptionController.text.trim(),
       priority: selectedPriority.value,
       assignee: selectedAssigneeName.string,
       dueDate: selectedDate.value,
+      description: imageUrl, // ✅ HIGHLIGHTED: Add this line in your model too
     );
 
-    try {
-      await FirebaseFirestore.instance
-          .collection('tasks')
-          .add(newTask.toJson());
+    // ✅ Step 5: Assign task to assignee
+    markTaskAssigned(selectedAssigneeName.string);
 
-      Get.back();
-      Get.snackbar("Success", "Task created successfully");
-    } catch (e) {
-      Get.snackbar("Error", "Failed to create task: $e");
-    }
+    // 🔥 Step 6: Add to Firestore
+    await FirebaseFirestore.instance
+        .collection('tasks')
+        .add(newTask.toJson());
+
+    Get.back();
+    Get.snackbar("Success", "Task created successfully");
+  } catch (e) {
+    Get.snackbar("Error", "Failed to create task: $e");
   }
+}
+
 
   @override
   void onClose() {

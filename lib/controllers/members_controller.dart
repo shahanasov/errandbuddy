@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 class AssigneeSummaryController extends GetxController {
   final assignees = <Assignee>[].obs;
+  final isLoading = true.obs;
 
   @override
   void onInit() {
@@ -12,10 +13,17 @@ class AssigneeSummaryController extends GetxController {
   }
 
   void fetchAssigneeStats() async {
-    final snapshot = await FirebaseFirestore.instance
+    isLoading.value = true;
+     FirebaseFirestore.instance
         .collection('members')
-        .get();
-    final data = snapshot.docs.map((e) => Assignee.fromMap(e.data())).toList();
-    assignees.assignAll(data);
+        .snapshots()
+        .listen((snapshot) {
+          final data = snapshot.docs
+              .map((e) => Assignee.fromMap(e.data()))
+              .toList();
+          assignees.assignAll(data);
+        });
+
+    isLoading.value = false;
   }
 }

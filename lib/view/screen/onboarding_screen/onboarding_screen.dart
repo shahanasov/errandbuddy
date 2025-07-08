@@ -1,4 +1,5 @@
 import 'package:errandbuddy/constants/colors.dart';
+import 'package:errandbuddy/data/services/isfirst_time.dart';
 import 'package:errandbuddy/view/screen/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
@@ -49,15 +50,7 @@ class OnboardingScreen extends StatelessWidget {
         ),
       ),
 
-     
-      showSkipButton: true,
-      skip: const Text(
-        "Skip",
-        style: TextStyle(
-          fontWeight: FontWeight.w600,
-          color: AppColors.cardColor,
-        ),
-      ),
+    
 
       showNextButton: false,
       done: const Text(
@@ -68,6 +61,7 @@ class OnboardingScreen extends StatelessWidget {
         ),
       ),
       onDone: () {
+        AppPreferences().setOnboardingSeen();
         Get.off(() => const HomeScreen());
       },
     );
