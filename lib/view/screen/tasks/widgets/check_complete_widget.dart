@@ -5,16 +5,13 @@ import 'package:errandbuddy/data/services/task_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-isCompleted(BuildContext context, TaskModel task,bool isOverdue) {
-
+isCompleted(BuildContext context, TaskModel task, bool isOverdue) {
   showDialog(
     context: context,
     barrierDismissible: true,
     builder: (_) {
       return Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -28,19 +25,13 @@ isCompleted(BuildContext context, TaskModel task,bool isOverdue) {
               const SizedBox(height: 16),
               const Text(
                 "Mark as Completed?",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
               const Text(
                 "Are you sure you want to mark this task as completed?",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.black87,
-                ),
+                style: TextStyle(fontSize: 15, color: Colors.black87),
               ),
               const SizedBox(height: 20),
               Row(
@@ -68,13 +59,13 @@ isCompleted(BuildContext context, TaskModel task,bool isOverdue) {
                           .collection('tasks')
                           .doc(task.id)
                           .update({'isCompleted': true});
-                          countCompletedTask(task,isOverdue: isOverdue);
+                      countCompletedTask(task, isOverdue: isOverdue);
                       Get.snackbar("✅ Completed", "Task marked as completed");
                     },
                     child: const Text("Yes"),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -82,5 +73,3 @@ isCompleted(BuildContext context, TaskModel task,bool isOverdue) {
     },
   );
 }
-
-

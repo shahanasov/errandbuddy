@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,12 +14,9 @@ Future<void> markTaskAssigned(String name) async {
     if (snapshot.docs.isNotEmpty) {
       final docId = snapshot.docs.first.id;
 
-      await FirebaseFirestore.instance
-          .collection('members')
-          .doc(docId)
-          .update({'assigned': FieldValue.increment(1)});
-
-      
+      await FirebaseFirestore.instance.collection('members').doc(docId).update({
+        'assigned': FieldValue.increment(1),
+      });
     } else {
       // print("No user found with name $name ❌");
     }
@@ -46,10 +42,9 @@ void fetchAndUpdateOverdueTasks() async {
     final Map<String, int> overdueCountByName = {};
 
     for (var task in overdueTasks) {
-      final name = task.assignee; 
-      if (name != null) {
-        overdueCountByName[name] = (overdueCountByName[name] ?? 0) + 1;
-      }
+      final name = task.assignee;
+
+      overdueCountByName[name] = (overdueCountByName[name] ?? 0) + 1;
     }
 
     // Step 4: Update 'overdue' field for each member
@@ -79,7 +74,11 @@ void fetchAndUpdateOverdueTasks() async {
     log("Error updating overdue tasks: $e");
   }
 }
-Future<void> countCompletedTask(TaskModel task, {required bool isOverdue}) async {
+
+Future<void> countCompletedTask(
+  TaskModel task, {
+  required bool isOverdue,
+}) async {
   try {
     // Look up the member by name (slow)
     final query = await FirebaseFirestore.instance
@@ -115,10 +114,9 @@ Future<void> countCompletedTask(TaskModel task, {required bool isOverdue}) async
     });
 
     // mark task completed
-    await FirebaseFirestore.instance
-        .collection('tasks')
-        .doc(task.id)
-        .update({'isCompleted': true});
+    await FirebaseFirestore.instance.collection('tasks').doc(task.id).update({
+      'isCompleted': true,
+    });
 
     Get.snackbar("✅ Task Completed", "Member stats updated");
   } catch (e) {

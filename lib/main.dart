@@ -2,10 +2,10 @@ import 'package:errandbuddy/constants/theme.dart';
 import 'package:errandbuddy/controllers/add_image_controller.dart';
 import 'package:errandbuddy/data/services/task_services.dart';
 import 'package:errandbuddy/firebase_options.dart';
+import 'package:errandbuddy/view/auth/sign_up/sign_up_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:errandbuddy/view/screen/onboarding_screen/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'ERRAND BUDDY',
       theme: AppTheme.light,
-      home: SplashScreen(),
+      home: SignUpScreen(),
     );
   }
 }
