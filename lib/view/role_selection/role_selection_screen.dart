@@ -7,6 +7,7 @@ class RoleSelectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(25.0),
@@ -28,9 +29,9 @@ class RoleSelectionPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               spacing: 10,
               children: [
-                roleContainer(isLeader: true,context: context),
+                roleContainer(isLeader: true, context: context),
                 // Member button
-                roleContainer(isLeader: false,context: context),
+                roleContainer(isLeader: false, context: context),
               ],
             ),
           ],
@@ -39,11 +40,14 @@ class RoleSelectionPage extends StatelessWidget {
     );
   }
 
-  InkWell roleContainer({required bool isLeader,required BuildContext context}) {
+  InkWell roleContainer({
+    required bool isLeader,
+    required BuildContext context,
+  }) {
     return InkWell(
       onTap: () {
         isLeader
-            ? showJoinInfoDialog(context)//here add a showdialogue  
+            ? showJoinInfoDialog(context) //here add a showdialogue
             : showPasteIdDialog(context);
       },
       child: Container(

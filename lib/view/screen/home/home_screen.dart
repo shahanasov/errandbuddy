@@ -3,7 +3,7 @@ import 'package:errandbuddy/controllers/bottom_nav.dart';
 import 'package:errandbuddy/view/screen/escalation/escalation_screen.dart';
 import 'package:errandbuddy/view/screen/members/members_screen.dart';
 import 'package:errandbuddy/view/screen/tasks/task_screen.dart';
-import 'package:errandbuddy/view/widgets/all_tabs.dart';
+import 'package:errandbuddy/view/widgets/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

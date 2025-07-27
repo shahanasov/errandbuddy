@@ -2,7 +2,7 @@ import 'package:errandbuddy/data/model/members_model.dart';
 import 'package:flutter/material.dart';
 
 class AssigneeSummaryCard extends StatelessWidget {
-  final Assignee assignee;
+  final MembersModel assignee;
 
   const AssigneeSummaryCard({super.key, required this.assignee});
 

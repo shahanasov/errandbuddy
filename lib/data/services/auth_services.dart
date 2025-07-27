@@ -1,8 +1,9 @@
+import 'package:errandbuddy/view/auth/sign_up/sign_up_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class AuthController extends GetxController {
-  static AuthController instance = Get.find();
+  static AuthController get instance => Get.find<AuthController>();
   FirebaseAuth auth = FirebaseAuth.instance;
 
 Future<bool> signUp(String email, String password) async {
@@ -62,6 +63,18 @@ Future<bool> signUp(String email, String password) async {
       return false;
     }
   }
+
+  Future<void> signOutUser() async {
+  try {
+    await FirebaseAuth.instance.signOut();
+
+    // Navigate to SignInScreen and remove all previous screens
+    Get.offAll(() => SignUpScreen());
+  } catch (e) {
+    Get.snackbar('Error', 'Failed to sign out: $e');
+  }
+}
+
 }
 
 class PasswordController extends GetxController {

@@ -1,8 +1,16 @@
 import 'dart:math';
 
+import 'package:errandbuddy/data/services/grouping.dart';
+import 'package:errandbuddy/view/auth/widgets/stack.dart';
+import 'package:errandbuddy/view/screen/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:errandbuddy/constants/colors.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+
+
+final name = userInfoController.name.value;
+final image = userInfoController.imagePath.value;
 
 void showPasteIdDialog(BuildContext context) {
   TextEditingController controller = TextEditingController();
@@ -65,19 +73,26 @@ void showPasteIdDialog(BuildContext context) {
             Align(
               alignment: Alignment.center,
               child: GestureDetector(
-                onTap: () {
-                  String meetingId = controller.text.trim();
-                  if (meetingId.isEmpty) {
+                onTap: ()  async {
+
+                  final groupId = controller.text.trim();
+                  if (groupId.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Please enter a group ID")),
                     );
-                  } else {
-                    Navigator.of(context).pop(); // Close dialog
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Joining: $meetingId")),
-                    );
-                    // You can call your join logic here using meetingId
+                    return;
                   }
+
+                  await handleGroupJoinOrCreate(
+                    groupId: groupId,
+                    name: userInfoController.name.value,
+                    imageUrl: userInfoController.imagePath.value,
+                    role: 'member',
+                  );
+
+                  Navigator.of(context).pop();
+                  Get.offAll(() => const HomeScreen());
+
                 },
                 child: Container(
                   width: 200,
@@ -126,7 +141,7 @@ void showJoinInfoDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (context) {
-      final String meetingId = generateGroupCode();
+      final String groupId = generateGroupCode();
       return AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         contentPadding: const EdgeInsets.all(20),
@@ -165,14 +180,14 @@ void showJoinInfoDialog(BuildContext context) {
                 children: [
                   Expanded(
                     child: SelectableText(
-                      meetingId,
+                      groupId,
                       style: const TextStyle(fontSize: 16),
                     ),
                   ),
                   IconButton(
                     icon: const Icon(Icons.copy),
                     onPressed: () {
-                      Clipboard.setData(ClipboardData(text: meetingId));
+                      Clipboard.setData(ClipboardData(text: groupId));
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text("Link copied to clipboard"),
@@ -187,18 +202,16 @@ void showJoinInfoDialog(BuildContext context) {
             Align(
               alignment: Alignment.center,
               child: GestureDetector(
-                onTap: () {
-                  if (meetingId.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Please enter a group ID")),
-                    );
-                  } else {
-                    Navigator.of(context).pop(); // Close dialog
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Joining: $meetingId")),
-                    );
-                    // You can call your join logic here using meetingId
-                  }
+                onTap: () async {
+                  await handleGroupJoinOrCreate(
+                    groupId: groupId,
+                    name: userInfoController.name.value,
+                    imageUrl: userInfoController.imagePath.value,
+                    role: 'leader',
+                  );
+
+                  Navigator.of(context).pop();
+                  Get.offAll(() => const HomeScreen());
                 },
                 child: Container(
                   width: 200,

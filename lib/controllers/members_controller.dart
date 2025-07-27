@@ -3,7 +3,7 @@ import 'package:errandbuddy/data/model/members_model.dart';
 import 'package:get/get.dart';
 
 class AssigneeSummaryController extends GetxController {
-  final assignees = <Assignee>[].obs;
+  final assignees = <MembersModel>[].obs;
   final isLoading = true.obs;
 
   @override
@@ -19,7 +19,7 @@ class AssigneeSummaryController extends GetxController {
         .snapshots()
         .listen((snapshot) {
           final data = snapshot.docs
-              .map((e) => Assignee.fromMap(e.data()))
+              .map((e) => MembersModel.fromMap(e.data()))
               .toList();
           assignees.assignAll(data);
         });

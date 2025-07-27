@@ -10,6 +10,7 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
      Get.put(AuthController());
+     
     return Scaffold(
       // form
       body:SignStack(isSignUp: false,),

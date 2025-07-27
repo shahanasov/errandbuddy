@@ -1,8 +1,8 @@
 import 'package:errandbuddy/constants/theme.dart';
-import 'package:errandbuddy/controllers/add_image_controller.dart';
+import 'package:errandbuddy/controllers/bindings.dart';
 import 'package:errandbuddy/data/services/task_services.dart';
 import 'package:errandbuddy/firebase_options.dart';
-import 'package:errandbuddy/view/auth/sign_up/sign_up_screen.dart';
+import 'package:errandbuddy/view/screen/onboarding_screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  Get.put(ImageController()); 
   fetchAndUpdateOverdueTasks();
   runApp(const MyApp());
 }
@@ -21,10 +20,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      initialBinding: AuthBinding(),
       debugShowCheckedModeBanner: false,
       title: 'ERRAND BUDDY',
       theme: AppTheme.light,
-      home: SignUpScreen(),
+      home: SplashScreen(),
     );
   }
 }
